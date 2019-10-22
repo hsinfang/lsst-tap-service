@@ -10,6 +10,13 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: "/tap/$2"
     nginx.ingress.kubernetes.io/proxy-redirect-from: "http://$host/tap/"
     nginx.ingress.kubernetes.io/proxy-redirect-to: "https://$host/api/tap/"
+
+    nginx.ingress.kubernetes.io/auth-url: "https://lsst-lsp-stable.ncsa.illinois.edu/auth?capability=read:tap"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      error_page 403 = @Basic401; # Basic401 configured in jwt-authorizer ingress rule
+      auth_request_set $auth_token $upstream_http_x_auth_request_token;
+      proxy_set_header Authorization "Bearer $auth_token";
+
   name: tap-ingress
 spec:
   rules:

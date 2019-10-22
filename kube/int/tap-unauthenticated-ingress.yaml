@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "900"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "900"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "900"
-    nginx.ingress.kubernetes.io/rewrite-target: "/tap/$2"
+    nginx.ingress.kubernetes.io/rewrite-target: "/tap/$1"
     nginx.ingress.kubernetes.io/proxy-redirect-from: "http://$host/tap/"
     nginx.ingress.kubernetes.io/proxy-redirect-to: "https://$host/api/tap/"
 
@@ -20,13 +20,13 @@ spec:
       - backend:
           serviceName: tap-service
           servicePort: 8080
-        path: /api/tap/availability$
+        path: /api/tap/(availability)
       - backend:
           serviceName: tap-service
           servicePort: 8080
-        path: /api/tap/capabilities$
+        path: /api/tap/(capabilities)
       - backend:
           serviceName: tap-service
           servicePort: 8080
-        path: /api/tap/swagger-ui
+        path: /api/tap/(swagger-ui.*)
 
